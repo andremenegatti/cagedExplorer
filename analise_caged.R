@@ -4,6 +4,8 @@ devtools::load_all(".")
 # Pasta de dados
 data_folder <- 'C:/Users/Dell/Desktop/USP_Municipios/Dados/CAGED'
 
+#### LENDO DADOS DE APENAS UM MES ####
+
 # Nome do arquivo txt do CAGED
 filename_caged <- str_c(data_folder, "/Raw/CAGEDEST_092019.txt")
 
@@ -13,6 +15,8 @@ dataset <- read_caged(filename_caged)
 # Preparando base de dados
 df_sp4 <- dataset %>%
   prepare_caged()
+
+#### LENDO DADOS DE TODOS OS MESES ####
 
 # Grade com todas as combinacoes ano-mes de interesse
 df_ref <- crossing(ano = as.character(2014:2019),

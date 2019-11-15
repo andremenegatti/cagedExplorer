@@ -1,4 +1,4 @@
-read_caged_rds <- function(data_folder, inicio, fim, periodos_12meses = TRUE, unnest = FALSE) {
+read_caged_rds <- function(data_folder, inicio, fim, periodos_12meses = TRUE, unnest = FALSE, stringAsFactors = TRUE) {
 
   ano_inicio <- str_extract(inicio, '\\d{4}') %>% as.integer()
 
@@ -33,6 +33,11 @@ read_caged_rds <- function(data_folder, inicio, fim, periodos_12meses = TRUE, un
   df_ref$dados_caged <- caged_list
 
   if (unnest) df_ref <- unnest(df_ref)
+
+  if (stringAsFactors) {
+    df_ref <- df_ref %>%
+      mutate_if(.predicate = is.character, .funs = as.factor)
+  }
 
   df_ref
 

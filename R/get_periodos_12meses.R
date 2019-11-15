@@ -32,8 +32,6 @@ get_periodos_12meses <-
                                           )
                              )
 
-    # return(list(df_periodos, factor_labels))
-
     df %>%
       inner_join(df_periodos, by = c("ano", "mes")) %>%
       mutate(periodo = factor(periodo,

@@ -1,12 +1,34 @@
-evolucao_acumulado_por_setor_sp <-
+barplot_12meses_por_setor_sp <-
   function(df,
-           mes_inicio,
-           mes_fim,
+           mes_inicio = NA,
+           mes_fim = NA,
            labs_title = str_c('Empregos no Estado de SP - Evolução do Saldo Acumulado ', mes_inicio, '-', mes_fim),
            labs_subtitle = 'Contribuição de cada setor',
            labs_caption = 'Fonte: Elaboração própria a partir de dados do CAGED.',
            labs_x = 'Período',
            labs_y = 'Postos de trabalho (milhares)') {
+
+    if (is.na(mes_inicio)) {
+      numero_mes_inicio <- df %>%
+        select(ano, mes) %>%
+        distinct() %>%
+        arrange(ano, mes) %>%
+        slice(1) %>%
+        select(mes) %>%
+        unlist()
+      mes_inicio <- meses$abrev[numero_mes_inicio]
+    }
+
+    if ((is.na(mes_fim))) {
+      numero_mes_fim <- df %>%
+        select(ano, mes) %>%
+        distinct() %>%
+        arrange(ano, mes) %>%
+        tail(1) %>%
+        select(mes) %>%
+        unlist()
+      mes_fim <- meses$abrev[numero_mes_fim]
+    }
 
     acumulado_12meses_estado <- df %>%
       filter(!is.na(periodo)) %>%
