@@ -1,0 +1,112 @@
+# Carregando pacotes
+library(tidyverse)
+library(readxl)
+
+# Alterando diretorio
+setwd("C:/Users/Dell/Desktop/USP Munic?pios")
+
+# Carregando funcoes uteis
+source('CAGED/Scripts/read_caged.R')
+source('CAGED/Scripts/calcular_saldo.R')
+
+# Leitura da base com codigos, nomes e regioes dos municipios paulistas
+regioes <- readxl::read_excel('Dados/municipios_regioes.xlsx', sheet = 1, col_names = TRUE, range = 'A1:H646')
+
+# Nome do arquivo txt do CAGED
+filename_caged <- "Dados/CAGED/Raw/CAGEDEST_092019.txt"
+
+# Leitura do CAGED (pode demorar um pouco...)
+dataset <- read_delim(file = filename_caged,
+                      delim = ";",
+                      trim_ws = TRUE,
+                      escape_double = FALSE,
+                      locale = locale(
+                        decimal_mark = ",",
+                        grouping_mark = ".",
+                        encoding = "ISO-8859-1"
+                        ),
+                      col_types = cols(
+                        `Bairros Fortaleza` = col_skip(), 
+                        `Bairros RJ` = col_skip(), 
+                        `Bairros SP` = col_skip(), 
+                        `CBO 2002 Ocupa??o` = col_skip(),
+                        `CNAE 1.0 Classe` = col_skip(),
+                        `CNAE 2.0 Subclas` = col_skip(),
+                        `Distritos SP` = col_skip(), 
+                        `Microrregi?o` = col_skip(),
+                        `Mesorregi?o` = col_skip(),
+                        `Regi?o Adm RJ` = col_skip(), 
+                        `Regi?o Adm SP` = col_skip(), 
+                        `Regi?o Corede` = col_skip(), 
+                        `Regi?o Corede 04` = col_skip(), 
+                        `Regi?o Gov SP` = col_skip(), 
+                        `Regi?o Senac PR` = col_skip(), 
+                        `Regi?o Senai PR` = col_skip(), 
+                        `Regi?o Senai SP` = col_skip(), 
+                        `Regi?es Adm DF` = col_skip(), 
+                        `Sub-Regi?o Senai PR` = col_skip(),
+                        `Tipo Estab` = col_skip(),
+                        `Tipo Defic` = col_skip(),
+                        `Ano Declarado` = col_skip(),
+                        `Ind Aprendiz` = col_skip(),
+                        `Ind Portador Defic` = col_skip(),
+                        `Tipo Mov Desagregado` = col_skip(),
+                        `Compet?ncia Declarada` = col_skip(),
+                        `Admitidos/Desligados` = col_skip(),
+                        `Sal?rio Mensal` = col_double(),
+                        `Saldo Mov` = col_integer(),
+                        `UF` = col_integer(),
+                        `Tempo Emprego` = col_double(),
+                        `Ind Trab Parcial` = col_integer(),
+                        `Ind Trab Intermitente` = col_integer(),
+                        `IBGE Subsetor` = col_integer(),
+                        `Qtd Hora Contrat` = col_integer(),
+                        `Munic?pio` = col_integer(),
+                        `Idade` = col_integer()
+                        )
+                      )
+
+dataset <- dataset %>% 
+  filter(UF == 35)
+
+# Explorando a base
+head(dataset)
+str(dataset)
+glimpse(dataset)
+
+# Montando base de SP
+df_sp <- dataset %>%
+  # Criando variavel com os "grandes setores"
+  mutate(setor = case_when(`IBGE Subsetor` %in% 1:14 ~ 'Ind?stria',
+                           `IBGE Subsetor` %in% 16:17 ~ 'Com?rcio',
+                           `IBGE Subsetor` %in% 18:24 ~ 'Servi?os',
+                           `IBGE Subsetor` == 15 ~ 'Constru??o civil',
+                           `IBGE Subsetor` == 25 ~ 'Agropecu?ria') %>% as.factor()
+         ) %>% 
+  # Juntando dados de nome do municipio e regioes
+  rename(codigo = `Munic?pio`) %>% 
+  left_join(regioes %>%
+              select(codigo, municipio = municipio_clean,
+                     regiao_administrativa, regiao_governo, regiao_metropolitana),
+            by = 'codigo')
+
+
+
+# Agregando por municipio
+df_mun <- df_sp %>% 
+  calcular_saldo(municipio)
+
+# Agregando por municipio e setor
+df_mun_set <- df_sp %>% 
+  calcular_saldo(municipio, setor)
+
+df_mun_set %>% 
+  filter(municipio == 'RIBEIRAO PRETO')
+
+# Agregando por regiao administrativa
+df_adm <- df_sp %>% 
+  calcular_saldo(regiao_administrativa)
+
+# Agregando por regiao de governo
+df_gov <- df_sp %>% 
+  calcular_saldo(regiao_governo)

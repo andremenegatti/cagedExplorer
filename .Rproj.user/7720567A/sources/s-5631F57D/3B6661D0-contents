@@ -1,0 +1,21 @@
+meses <- tibble(numero = 1:12,
+                abrev = c(
+                  'Jan',
+                  'Fev',
+                  'Mar',
+                  'Abr',
+                  'Maio',
+                  'Jun',
+                  'Jul',
+                  'Ago',
+                  'Set',
+                  'Out',
+                  'Nov',
+                  'Dez'
+                ))
+
+
+library(devtools)
+
+
+use_data(meses)

@@ -1,0 +1,54 @@
+# Carregando pacotes
+library(tidyverse)
+
+# Alterando diretorio
+setwd("C:/Users/Dell/Desktop/USP Munic?pios")
+
+# Carregando funcoes uteis
+source('CAGED/Scripts/read_caged.R')
+source('CAGED/Scripts/calcular_saldo.R')
+
+# Leitura da base com codigos, nomes e regioes dos municipios paulistas
+regioes <- readxl::read_excel('Dados/municipios_regioes.xlsx', sheet = 1, col_names = TRUE, range = 'A1:H646')
+
+# Nome do arquivo txt do CAGED
+# filename_caged = "CAGEDEST_072019.txt"
+
+df_ref <- crossing(ano = as.character(2014:2019),
+                   mes = str_pad(1:12, width = 2, side = 'left', pad = '0')) %>% 
+  filter(!(ano == '2019' & as.numeric(mes) > 9))
+
+caged_list <- list()
+
+for (i in 1:nrow(df_ref)) {
+  message(i)
+  filename_caged = str_c('Dados/CAGED/Raw/CAGEDEST_', df_ref$mes[i], df_ref$ano[i], '.txt')
+  message(filename_caged)
+  
+  caged_list[[i]] <- read_caged(filename_caged) %>% 
+    filter(UF == 35) %>% 
+    # Criando variavel com os "grandes setores"
+    mutate(setor = case_when(`IBGE Subsetor` %in% 1:14 ~ 'Ind?stria',
+                             `IBGE Subsetor` %in% 16:17 ~ 'Com?rcio',
+                             `IBGE Subsetor` %in% 18:24 ~ 'Servi?os',
+                             `IBGE Subsetor` == 15 ~ 'Constru??o civil',
+                             `IBGE Subsetor` == 25 ~ 'Agropecu?ria') %>% as.factor()
+    ) %>% 
+    # Juntando dados de nome do municipio e regioes
+    rename(codigo = `Munic?pio`) %>% 
+    left_join(regioes %>%
+                 select(codigo, municipio = municipio_clean,
+                        regiao_administrativa, regiao_governo, regiao_metropolitana),
+               by = 'codigo') %>% 
+    # mutate(`Saldo Mov` = ifelse(is.na(`Saldo Mov`), 0, `Saldo Mov`)) %>% 
+    mutate(ano = df_ref$ano[i],
+           mes = df_ref$mes[i])
+  
+}
+
+df_ref <- df_ref %>% 
+  mutate(periodo = 1:nrow(df_ref)) %>% 
+  mutate(dados_caged = caged_list)
+
+
+# saveRDS(df_ref, 'df_caged.rds')
