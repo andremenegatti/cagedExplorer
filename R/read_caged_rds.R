@@ -1,4 +1,9 @@
-read_caged_rds <- function(data_folder, inicio, fim, periodos_12meses = TRUE, unnest = FALSE, stringAsFactors = TRUE) {
+read_caged_rds <- function(data_folder,
+                           inicio,
+                           fim,
+                           periodos_12meses = TRUE,
+                           nested = FALSE,
+                           stringAsFactors = TRUE) {
 
   ano_inicio <- str_extract(inicio, '\\d{4}') %>% as.integer()
 
@@ -15,9 +20,13 @@ read_caged_rds <- function(data_folder, inicio, fim, periodos_12meses = TRUE, un
     filter(!(ano == as.character(ano_fim) & as.numeric(mes) > mes_fim)) %>%
     filter(!(ano == as.character(ano_inicio) & as.numeric(mes) < mes_inicio))
 
+  if (periodos_12meses & (nrow(df_ref) %% 12) != 0) {
+    stop("'periodos_12meses = TRUE: favor definir período contendo múltiplo de 12 meses'")
+  }
+
   caged_list <- list()
   for (i in 1:nrow(df_ref)) {
-    filename_caged = str_c(data_folder, '/Clean/CAGED_', df_ref$ano[i], '_', df_ref$mes[i], '.rds')
+    filename_caged = str_c(data_folder, '/CAGED_', df_ref$ano[i], '_', df_ref$mes[i], '.rds')
     message(str_c(i, '\n ', filename_caged, '\n'))
     caged_list[[i]] <- readRDS(filename_caged)
   }
@@ -32,7 +41,7 @@ read_caged_rds <- function(data_folder, inicio, fim, periodos_12meses = TRUE, un
 
   df_ref$dados_caged <- caged_list
 
-  if (unnest) df_ref <- unnest(df_ref)
+  if (!nested) df_ref <- unnest(df_ref)
 
   if (stringAsFactors) {
     df_ref <- df_ref %>%

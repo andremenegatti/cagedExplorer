@@ -13,13 +13,13 @@ filename_caged <- str_c(data_folder, "/Raw/CAGEDEST_092019.txt")
 dataset <- read_caged(filename_caged)
 
 # Preparando base de dados
-df_sp4 <- dataset %>%
+df_sp <- dataset %>%
   prepare_caged()
 
 #### LENDO DADOS DE TODOS OS MESES ####
 
 # Grade com todas as combinacoes ano-mes de interesse
-df_ref <- crossing(ano = as.character(2014:2019),
+df_ref <- crossing(ano = as.character(2017:2019),
                    mes = str_pad(1:12, width = 2, side = 'left', pad = '0')) %>%
   filter(!(ano == '2019' & as.numeric(mes) > 9))
 
