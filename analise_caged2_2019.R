@@ -1,12 +1,11 @@
 devtools::load_all('.')
-# library(rgdal)
 library(tmap)
 library(sp)
 library(sf)
 
 #### IMPORTANDO DADOS ####
 df_caged <- read_caged_rds(data_folder = 'C:/Users/Dell/Desktop/USP_Municipios/Dados/CAGED/Clean',
-                           inicio = '2018-10',
+                           inicio = '2019-01',
                            fim = '2019-09',
                            nested = FALSE,
                            stringAsFactors = TRUE,
@@ -57,7 +56,7 @@ reg_gov_salario <- reg_gov_criadas %>%
            as.factor())
 
 #### DOTPLOTS ####
-# Saldo
+# Saldo salarios
 reg_gov_salario %>%
   mutate(regiao_governo = fct_reorder(regiao_governo, var_perc_massa_salarial)) %>%
   ggplot() +
@@ -82,21 +81,19 @@ reg_gov_salario %>%
 
 # ggsave('C:/Users/Dell/Desktop/variacao_massa_salarial.png', height = 8, width = 6)
 
-# Saldo 100 mil hab
-saldo_100mil_breaks <- get_breaks(sp_sf_gov$`Empregos gerados/100mil hab.`)
-saldo_100mil_palette <- get_palette(saldo_100mil_breaks)
-saldo_100mil_breaks2 <- c(-585, saldo_100mil_breaks[c(2:5, 7:10)])
-saldo_100mil_palette2 <- get_palette(saldo_100mil_breaks2)
-saldo_100mil_palette3 <- c(saldo_100mil_palette2[c(1:4, 6)], "#6BAED6","#2171B5", "#08306B")
+# Empregos gerados 100 mil hab
+
+map_breaks = c(-540, -168, -45, 0, 401.42545, 816.63611, 1650, 2201.27665)
+map_palette = c("#B2182B", "#F4A582", "#FDDBC7",  "#C6DBEF", "#6BAED6", "#2171B5", "#08306B")
 
 sp_sf_gov %>%
   mutate(regiao_governo = fct_reorder(regiao_governo, `Empregos gerados/100mil hab.`)) %>%
   mutate(
-    grupo_saldo = group_by_breaks(`Empregos gerados/100mil hab.`,
-                                  breaks = saldo_100mil_breaks2) %>%
+    grupo_saldo = group_by_breaks(sp_sf_gov$`Empregos gerados/100mil hab.`,
+                                  breaks = map_breaks) %>%
       as.factor() %>%
       fct_reorder(`Empregos gerados/100mil hab.`)
-    ) %>%
+  ) %>%
   ggplot() +
   geom_point(
     aes(
@@ -109,29 +106,24 @@ sp_sf_gov %>%
     col = 'gray'
   ) +
   geom_vline(xintercept = 0, col = 'darkred', alpha = 0.5) +
-  scale_fill_manual(values = saldo_100mil_palette3) +
+  scale_fill_manual(values = map_palette) +
   custom_theme() +
   theme(legend.position = 'none') +
   labs(
     y = 'Região de Governo',
     title = 'Geração de Empregos por 100 mil habitantes',
-    subtitle = 'Comparação entre Regiões de Governo de SP - Out/2018 a Set/2019'
+    subtitle = 'Comparação entre Regiões de Governo de SP - Jan/2019 a Set/2019'
   )
 
-# ggsave('C:/Users/Dell/Desktop/dotplot_empregos_100mil_hab.png', height = 8, width = 6)
-
+# ggsave('C:/Users/Dell/Desktop/dotplot_empregos_100mil_hab_2019.png', height = 8, width = 6)
 
 
 # Saldo vagas
-saldo_breaks <- get_breaks(sp_sf_gov$`Saldo de empregos`)
-saldo_palette <- get_palette(saldo_breaks)
-saldo_breaks2 <- saldo_breaks[c(1:5, 7:10)]
-saldo_palette2 <- get_palette(saldo_breaks2)
-saldo_palette3 <- c(saldo_palette2[c(1:4, 6)], "#6BAED6","#2171B5", "#08306B")
-
 sp_sf_gov %>%
   mutate(
-    grupo_saldo = group_by_breaks(sp_sf_gov$`Saldo de empregos`, saldo_breaks2) %>%
+    grupo_saldo = group_by_breaks(sp_sf_gov$`Saldo de empregos`,
+                                  breaks = c(-1813, -828, -311, 0, 1391, 2530, 4600, 18500, 100058)
+                                  ) %>%
       as.factor() %>%
       fct_reorder(`Saldo de empregos`)
   ) %>%
@@ -149,7 +141,7 @@ sp_sf_gov %>%
     col = 'gray'
   ) +
   geom_vline(xintercept = 0, col = 'darkred', alpha = 0.5) +
-  scale_fill_manual(values = saldo_palette3) +
+  scale_fill_manual(values = c("#D6604D", "#F4A582", "#FDDBC7", "#DEEBF7", "#9ECAE1", "#4292C6", "#2171B5", "#08306B")) +
   custom_theme() +
   theme(legend.position = 'none') +
   labs(
@@ -159,8 +151,7 @@ sp_sf_gov %>%
     subtitle = 'Comparação entre Regiões de Governo (exceto Capital)'
   )
 
-# ggsave('C:/Users/Dell/Desktop/dotplot_saldo_vagas_12meses.png', height = 8, width = 6)
-
+# ggsave('C:/Users/Dell/Desktop/dotplot_saldo_vagas_2019.png', height = 8, width = 6)
 
 #### MAPAS ####
 # Modo estático
@@ -171,29 +162,33 @@ map1 <- reg_gov_salario %>%
   mutate(`Saldo (milhares de R$)` = saldo_massa_salarial / 1e+3) %>%
   add_geometry_regioes_gov() %>%
   mapa_regiao_saldo(var_saldo = 'Saldo (milhares de R$)',
-                    map_title = 'Regiões Gov. SP - Saldo de Salários - Acumulado Out/2018 a Set/2019',
+                    map_title = 'Regiões Gov. SP - Saldo de Salários - Acumulado Jan/2019 a Set/2019',
                     map_palette = c("#67001F", "#D6604D", "#F4A582", "#FDDBC7", "#DEEBF7", "#C6DBEF", "#9ECAE1", "#2171B5", "#08306B"))
-# tmap_save(map1, filename = 'C:/Users/Dell/Desktop/mapa_massa_salarial_absoluta.png', width = 7, height = 5.5)
+# tmap_save(map1, filename = 'C:/Users/Dell/Desktop/mapa_massa_salarial_absoluta_2019.png', width = 7, height = 5.5)
 
 # Saldo de vagas
 map2 <- mapa_regiao_saldo(sp_sf_gov,
                           var_saldo = "Saldo de empregos",
-                          map_title = 'Regiões Gov. SP - Geração de empregos - Acumulado Out/2018 a Set/2019',
-                          map_breaks = saldo_breaks2,
-                          map_palette = saldo_palette3)
-# tmap_save(map2, filename = 'C:/Users/Dell/Desktop/mapa_saldo.png', width = 7, height = 5.5)
+                          map_title = 'Regiões Gov. SP - Geração de empregos - Acumulado Jan/2019 a Set/2019',
+                          map_breaks = c(-1813, -828, -311, 0, 1391, 2530, 4600, 18500, 100058),
+                          map_palette = c("#D6604D", "#F4A582", "#FDDBC7", "#DEEBF7", "#9ECAE1", "#4292C6", "#2171B5", "#08306B"))
+# tmap_save(map2, filename = 'C:/Users/Dell/Desktop/mapa_saldo_2019.png', width = 7, height = 5.5)
 
 # Saldo de vagas/100 mil hab
+sp_sf_gov$`Empregos gerados/100mil hab.` %>% sort()
 map3 <- mapa_regiao_saldo(sp_sf_gov,
                           var_saldo = "Empregos gerados/100mil hab.",
-                          map_breaks = saldo_100mil_breaks2,
-                          map_palette = saldo_100mil_palette3)
-# tmap_save(map3, filename = 'C:/Users/Dell/Desktop/mapa_saldo_100mil_hab_12_meses.png', width = 7, height = 5.5)
+                          map_title = 'Regiões Gov. SP - Empregos gerados/100mil hab. - Jan/2019 a Set/2019',
+                          map_breaks = c(-540, -168, -45, 0, 401.42545, 816.63611, 1650, 2201.27665),
+                          map_palette = c("#B2182B", "#F4A582", "#FDDBC7",  "#C6DBEF", "#6BAED6", "#2171B5", "#08306B"))
+map3
+# tmap_save(map3, filename = 'C:/Users/Dell/Desktop/mapa_saldo_100mil_hab_2019.png', width = 7, height = 5.5)
 
 # Total salários vagas criadas
 map4 <- reg_gov_salario %>%
   mutate(`Salários criados (milhões de R$)` = massa_salarial_criadas / 1e+6) %>%
   add_geometry_regioes_gov() %>%
   mapa_regiao_salario(var_saldo = 'Salários criados (milhões de R$)',
-                      map_title = 'Regiões Gov. SP - Soma dos salários das vagas criadas - Out/2018 a Set/2019')
-# tmap_save(map4, filename = 'C:/Users/Dell/Desktop/mapa_salarios_criados.png', width = 7, height = 5.5)
+                      map_title = 'Regiões Gov. SP - Soma dos salários das vagas criadas - Jan/2019 a Set/2019',
+                      map_palette = c(RColorBrewer::brewer.pal(5, 'Blues'), "#08306B"))
+# tmap_save(map4, filename = 'C:/Users/Dell/Desktop/mapa_salarios_criados_2019.png', width = 7, height = 5.5)

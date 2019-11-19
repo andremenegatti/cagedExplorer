@@ -1,6 +1,7 @@
 get_breaks <- function(x, n = 9) {
 
   x <- sort(x)
+  x <- round(x, digits = 4)
 
   worst <- min(x)
   best <- max(x)
