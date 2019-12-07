@@ -7,7 +7,7 @@ df_estoque_regioes_setor <- readRDS('C:/Users/Dell/Desktop/USP_Municipios/Dados/
 # CAGED
 df_caged <- read_caged_rds(data_folder = 'C:/Users/Dell/Desktop/USP_Municipios/Dados/CAGED/Clean',
                            inicio = '2019-01',
-                           fim = '2019-09',
+                           fim = '2019-10',
                            nested = FALSE,
                            stringAsFactors = TRUE,
                            periodos_12meses = FALSE)
@@ -84,16 +84,16 @@ plot1 <- df_regioes %>%
     x = 'Variação do estoque de empregos formais em relação a dez/2018',
     y = 'Região de Governo',
     title = 'Variação percentual do estoque de empregos formais',
-    subtitle = 'Comparação do estoque em Set/2019 com o estoque em Dez/2018'
+    subtitle = 'Comparação do estoque em Out/2019 com o estoque em Nov/2018'
     # caption = 'Fonte: elaboração própria a partir de dados do CAGED e da RAIS.'
   )
 
 plot1
-ggsave('C:/Users/Dell/Desktop/variacao_percentual_estoque.png', height = 7, width = 6)
+# ggsave('C:/Users/Dell/Desktop/variacao_percentual_estoque.png', height = 7, width = 6)
 
 # Cores de acordo com o mapa
-map_breaks <- c(-2.55, 0, 2, 4, 6, 8.3)
-map_palette <- c( "#B2182B", "#C6DBEF", "#6BAED6", "#2171B5",  "#08306B")
+map_breaks <- c(-3.3, 0, 2, 4, 6, 8.5)
+map_palette <- c( "#B2182B", "#C6DBEF", "#6BAED6", "#2171B5", "#08306B")
 
 plot2 <- df_regioes %>%
   filter(mes == 9) %>%
@@ -126,12 +126,12 @@ plot2 <- df_regioes %>%
     x = 'Variação do estoque de empregos formais em relação a dez/2018',
     y = 'Região de Governo',
     title = 'Variação percentual do estoque de empregos formais',
-    subtitle = 'Comparação do estoque em Set/2019 com o estoque em Dez/2018'
+    subtitle = 'Comparação do estoque em Out/2019 com o estoque em Dez/2018'
     # caption = 'Fonte: elaboração própria a partir de dados do CAGED e da RAIS.'
   )
 
 plot2
-ggsave('C:/Users/Dell/Desktop/variacao_percentual_estoque.png', height = 7, width = 6)
+# ggsave('C:/Users/Dell/Desktop/variacao_percentual_estoque.png', height = 7, width = 6)
 
 
 #### MAPAS ####
@@ -145,6 +145,6 @@ map1 <- df_regioes %>%
   mapa_regiao_saldo(var_saldo = 'Variação Estoque (%)',
                     map_breaks = map_breaks,
                     map_palette = map_palette,
-                    map_title = 'Regiões Gov. SP - Variação Estoque de Empregos Formais - Jan-Set/2019')
+                    map_title = 'Regiões Gov. SP - Variação Estoque de Empregos Formais - Jan-Out/2019')
 
 # tmap_save(map1, filename = 'C:/Users/Dell/Desktop/mapa_estoque.png', width = 7, height = 5.5)
