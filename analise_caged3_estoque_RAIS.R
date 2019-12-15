@@ -56,9 +56,11 @@ df_regioes <- saldo_mensal_regioes2 %>%
 #   ) +
 #   facet_wrap(~ regiao_governo, scales = 'free')
 
+df_regioes_last_month <- df_regioes %>%
+  filter(mes == 10)
+
 #### DOTPLOTS ####
-plot1 <- df_regioes %>%
-  filter(mes == 9) %>%
+plot1 <- df_regioes_last_month %>%
   left_join(saldo_2019_regioes, by = 'regiao_governo') %>%
   mutate(regiao_governo = fct_reorder(regiao_governo, var_perc_estoque_inicial)) %>%
   mutate(sentido_saldo = ifelse(saldo2019 > 0, 'Positivo', 'Negativo')) %>%
@@ -92,11 +94,10 @@ plot1
 # ggsave('C:/Users/Dell/Desktop/variacao_percentual_estoque.png', height = 7, width = 6)
 
 # Cores de acordo com o mapa
-map_breaks <- c(-3.3, 0, 2, 4, 6, 8.5)
+map_breaks <- c(min(df_regioes_last_month$var_perc_estoque_inicial), 0, 2, 4, 6, max(df_regioes_last_month$var_perc_estoque_inicial))
 map_palette <- c( "#B2182B", "#C6DBEF", "#6BAED6", "#2171B5", "#08306B")
 
-plot2 <- df_regioes %>%
-  filter(mes == 9) %>%
+plot2 <- df_regioes_last_month %>%
   mutate(regiao_governo = fct_reorder(regiao_governo, var_perc_estoque_inicial)) %>%
   mutate(grupo = group_by_breaks(var_perc_estoque_inicial,
                                  breaks = map_breaks) %>%
@@ -119,7 +120,7 @@ plot2 <- df_regioes %>%
   theme(legend.position = 'none') +
   scale_fill_manual(values = map_palette) +
   scale_x_continuous(
-    # breaks = seq(-3, 9, by = 1.5),
+    breaks = seq(-2, 8, by = 2),
     labels = function(x) formatC(x, digits = 2, big.mark = '.', decimal.mark = ',') %>% str_c('%')
   ) +
   labs(
@@ -138,8 +139,7 @@ plot2
 library(sf)
 library(tmap)
 
-map1 <- df_regioes %>%
-  filter(mes == 9) %>%
+map1 <- df_regioes_last_month %>%
   add_geometry_regioes_gov() %>%
   mutate(`Variação Estoque (%)` = var_perc_estoque_inicial) %>%
   mapa_regiao_saldo(var_saldo = 'Variação Estoque (%)',
