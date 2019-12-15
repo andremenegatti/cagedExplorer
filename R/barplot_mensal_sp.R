@@ -41,13 +41,13 @@ barplot_mensal_sp <- function(df,
   evolucao_mensal <- df %>%
     calcular_saldo(ano, mes) %>%
     arrange(ano, mes) %>%
-    mutate(ano_mes = str_c(ano, mes, sep = '/'))
+    mutate(ano_mes = str_c(ano, str_pad(mes, width = 2, side = 'left', pad = '0'), sep = '/'))
 
   evolucao_mensal_setor <- df %>%
     calcular_saldo(ano, mes, setor) %>%
     drop_na() %>%
     arrange(ano, mes) %>%
-    mutate(ano_mes = str_c(ano, mes, sep = '/'))
+    mutate(ano_mes = str_c(ano, str_pad(mes, width = 2, side = 'left', pad = '0'), sep = '/'))
 
 
   if (!incluir_ano_x) {
