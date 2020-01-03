@@ -1,11 +1,20 @@
 Package: cagedExplorer
 Type: Package
-Title: Importação e Análise de dados do CAGED
-Version: 0.1.0
-Author: André Luís Menegatti
-Maintainer: Andre Luís Menegatti <andre.menegatti@usp.br>
-Description: Facilita a importação e manipulação de dados do CAGED, com ênfase em dados referentes ao estado de São Paulo.
-License: What license is it under?
+Title: Tools for Importing and Analyzing Data from CAGED
+Description: Tools for importing and analyzing data from CAGED,
+    the Brazilian General Registry of Employed and Unemployed People.
+    As of now, the package focuses on data concerning the State of 
+    Sao Paulo. Relying mostly on tools from the tidyverse, it reads
+    txt files released by the Brazilian Ministry of Labor, joins data from
+    other sources, performs data wrangling and builds some pre-defined
+    plots. It also uses the tmap package to plot maps from the State of
+    Sao Paulo.
+Version: 0.0.0.9000
+Authors@R: person("Andre Luis", "Menegatti", email = "andre.menegatti@hotmail.com",
+  role = c("aut", "cre"))
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Depends: tidyverse
+Imports: sf, sp, tmap
+RoxygenNote: 7.0.2
