@@ -1,3 +1,11 @@
+#' Custom \code{ggplot2} theme settings
+#'
+#' @return A \code{ggplot2} \code{theme} object
+#'
+#' @examples
+#' ggplot(data = mtcars) +
+#' geom_point(aes(x = mpg, y = cyl)) +
+#' custom_theme()
 custom_theme <- function() {
   theme_bw() +
     theme(panel.grid.minor.x = element_blank(),

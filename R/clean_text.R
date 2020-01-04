@@ -1,13 +1,18 @@
-#' Converts character string to uppercase and removes accents, tildes and cedillas
+#' Returns string in upper-case without accents, tildes and cedillas
 #'
-#' @param x string
+#' \code{clean_text} converts the provided string to upper-case
+#' and removes accents, tildes and cedillas.
 #'
-#' @return string
-#' @export
+#' @param string A character string
+#'
+#' @return A clean, upper-case version of provided \code{string}
 #'
 #' @examples
-clean_text <- function(x) {
-  toupper(x) %>%
+#' clean_text('São Paulo')
+#' clean_text('Mogi-Mirim')
+#' clean_text(c('Carapicuíba', 'Tibiriçá', 'SERTÃOZINHO'))
+clean_text <- function(string) {
+  toupper(string) %>%
     str_replace_all('\u00c3', 'A') %>%
     str_replace_all('\u00d5', 'O') %>%
     str_replace_all('\u00c9', 'E') %>%

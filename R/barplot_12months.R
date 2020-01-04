@@ -1,4 +1,21 @@
-barplot_12meses_por_setor_sp <-
+#' Barplot showing the evolution of job creation through 12-month periods
+#'
+#' Builds a barplot depicting the evolution of job creation over time. Each bar
+#' indicates the jobs created/destroyed in a 12-month period. Colors
+#' represent economic sectors (IBGE's "big-five"). Labels joined by dashed
+#' lines show the net job creation of each 12-month period.
+#'
+#' @param df A dataframe with CAGED micro-data.
+#' @param mes_inicio Optional integer ranging from 1 to 12.
+#' @param mes_fim Optional integer ranging from 1 to 12.
+#' @param labs_title Optional character string with plot title.
+#' @param labs_subtitle Optional character string with plot subtitle.
+#' @param labs_caption Optional character string with plot caption.
+#' @param labs_x Optional character string with x-axis title.
+#' @param labs_y Optional character string with y-axis title.
+#'
+#' @return A \pkg{ggplot2} plot.
+barplot_12months <-
   function(df,
            mes_inicio = NA,
            mes_fim = NA,
