@@ -4,10 +4,10 @@
 \alias{get_palette}
 \title{Returns a custom 'RdBu' color palette}
 \usage{
-get_palette(map_breaks)
+get_palette(breaks)
 }
 \arguments{
-\item{map_breaks}{A numeric vector}
+\item{breaks}{A numeric vector}
 }
 \value{
 A character vector with HEX codes

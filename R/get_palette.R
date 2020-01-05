@@ -3,10 +3,10 @@
 #' Builds a custom 'RdBu'color palette based on a
 #' vector of breaks.
 #'
-#' @param map_breaks A numeric vector
+#' @param breaks A numeric vector
 #'
 #' @return A character vector with HEX codes
-get_palette <- function(map_breaks) {
+get_palette <- function(breaks) {
 
   reds_full <- c("#67001F", "#B2182B", "#D6604D",
                  "#F4A582", "#FDDBC7", "#F7F7F7",
@@ -17,8 +17,8 @@ get_palette <- function(map_breaks) {
                   "#9ECAE1", "#6BAED6", "#4292C6",
                   "#2171B5", "#08519C", "#08306B")
 
-  n_negative <- sum(map_breaks < 0)
-  n_positive <- sum(map_breaks > 0)
+  n_negative <- sum(breaks < 0)
+  n_positive <- sum(breaks > 0)
 
   palette_saldo_reg_gov <- c(reds_full[2:(1 + n_negative)],
                              blues_full[2:(n_positive - 1)],

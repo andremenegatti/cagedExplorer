@@ -138,7 +138,7 @@ read_caged_rds <- function(data_folder,
 
   df_ref$dados_caged <- caged_list
 
-  if (!nested) df_ref <- unnest(df_ref)
+  if (!nested) df_ref <- unnest(df_ref, cols = c(dados_caged))
 
   if (stringAsFactors) {
     df_ref <- df_ref %>%

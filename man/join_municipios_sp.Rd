@@ -20,7 +20,7 @@ Paulo. New data comes from dataset \code{municipios_sp}, and includes:
 \item \code{Codmun7}
 \item \code{municipio}
 \item \code{municipio_clean}
-\item \code{pop2019}
+\item \code{pop}
 \item \code{regiao_admnisitrativa}
 \item \code{regiao_governo}
 \item \code{regiao_metropolitana}

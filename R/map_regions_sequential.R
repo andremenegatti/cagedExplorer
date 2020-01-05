@@ -12,7 +12,7 @@
 #'   palette or character vector with color HEX codes.
 #'
 #' @return A \pkg{tmap} plot.
-map_region_sequential <-
+map_regions_sequential <-
   function(df, var_plot,
            map_title = str_c('Regiões Gov. de SP - ', var_plot, ' - Acumulado 12 meses'),
            map_breaks = NA, map_palette = 'Blues') {

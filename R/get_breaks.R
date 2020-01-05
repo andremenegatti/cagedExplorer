@@ -27,9 +27,6 @@ get_breaks <- function(x, n = 9) {
   positive <- x2[x2 > 0]
   negative <- x2[x2 <= 0]
 
-  positive
-  negative
-
   if (n %% 2 == 0) {
     n2 <- n - 4
     n_positive <- n2 / 2
@@ -51,7 +48,7 @@ get_breaks <- function(x, n = 9) {
   int_negative[1] <- int_negative[1] - 1
   int_positive[length(int_positive)] <- int_positive[length(int_positive)] + 1
 
-  my_breaks <- c(worst, int_negative, int_positive, best)
+  my_breaks <- c(worst, int_negative, int_positive[-1], best)
 
   my_breaks
 

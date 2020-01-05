@@ -68,7 +68,7 @@ get_ibge_sector <- function(x = codigo_subsetor_ibge, return_factor = TRUE) {
 #' \item \code{Codmun7}
 #' \item \code{municipio}
 #' \item \code{municipio_clean}
-#' \item \code{pop2019}
+#' \item \code{pop}
 #' \item \code{regiao_admnisitrativa}
 #' \item \code{regiao_governo}
 #' \item \code{regiao_metropolitana}
@@ -92,7 +92,7 @@ join_municipios_sp <- function(df) {
 
   joined <- df %>%
     left_join(municipios_sp %>%
-                select(Codmun7, codigo, municipio, municipio_clean, pop2019,
+                select(Codmun7, codigo, municipio, municipio_clean, pop,
                        regiao_administrativa, regiao_governo, regiao_metropolitana),
               by = c('codigo_municipio' = 'codigo')) %>%
     mutate(regiao_administrativa = as.factor(regiao_administrativa),
