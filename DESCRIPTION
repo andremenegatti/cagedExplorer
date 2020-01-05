@@ -15,6 +15,6 @@ Authors@R: person("Andre Luis", "Menegatti", email = "andre.menegatti@hotmail.co
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Depends: tidyverse
-Imports: sf, sp, tmap
+Depends: tidyverse, sf
+Imports: sp, tmap
 RoxygenNote: 7.0.2

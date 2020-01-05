@@ -1,4 +1,26 @@
-barplot_mensal_sp <- function(df,
+#' Barplot showing the monthly evolution of job creation
+#'
+#' Builds a barplot depicting the evolution of job creation over time, by month.
+#' Each bar indicates the jobs created/destroyed in a month. Colors represent
+#' economic sectors (IBGE's "big-five"). Labels joined by dashed lines show
+#' monthly net job creation.
+#'
+#' @param df A dataframe with CAGED micro-data.
+#' @param inicio Optional string indicating the starting month, if one does not
+#'   to use all available data. Recommended format: YYYY-MM.
+#' @param fim Optional string indicating the final month, if one does not to use
+#'   all available data. Recommended format: YYYY-MM.
+#' @param incluir_ano_x \code{logical}. If \code{TRUE}, x-axis labels include
+#'   the year of each month. Recommended when plotting months of more than a
+#'   single year. Defaults to \code{FALSE}.
+#' @param labs_title Optional character string with plot title.
+#' @param labs_subtitle Optional character string with plot subtitle.
+#' @param labs_caption Optional character string with plot caption.
+#' @param labs_x Optional character string with x-axis title.
+#' @param labs_y Optional character string with y-axis title.
+#'
+#' @return A \pkg{ggplot2} plot.
+barplot_monthly <- function(df,
                               inicio = NA,
                               fim = NA,
                               incluir_ano_x = FALSE,
@@ -39,12 +61,12 @@ barplot_mensal_sp <- function(df,
   }
 
   evolucao_mensal <- df %>%
-    calcular_saldo(ano, mes) %>%
+    compute_job_creation(ano, mes) %>%
     arrange(ano, mes) %>%
     mutate(ano_mes = str_c(ano, str_pad(mes, width = 2, side = 'left', pad = '0'), sep = '/'))
 
   evolucao_mensal_setor <- df %>%
-    calcular_saldo(ano, mes, setor) %>%
+    compute_job_creation(ano, mes, setor) %>%
     drop_na() %>%
     arrange(ano, mes) %>%
     mutate(ano_mes = str_c(ano, str_pad(mes, width = 2, side = 'left', pad = '0'), sep = '/'))
@@ -62,7 +84,7 @@ barplot_mensal_sp <- function(df,
       mutate(label_mes = str_c(meses$abrev[mes], str_remove(ano, '\\d{2}'), sep = '/'))
   }
 
-  barplot_mensal_sp <-
+  barplot_monthly <-
     ggplot(data = evolucao_mensal_setor) +
     geom_col(aes(x = as.factor(ano_mes),
                  y = saldo/1000,
@@ -83,7 +105,7 @@ barplot_mensal_sp <- function(df,
     geom_label(data = evolucao_mensal, aes(x = ano_mes, y = saldo/1000, label = str_replace(saldo/1000, '\\.', ',')), family = 'serif', size = 3)
 
 
-  barplot_mensal_sp
+  barplot_monthly
 
 }
 

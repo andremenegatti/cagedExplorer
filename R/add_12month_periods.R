@@ -1,14 +1,23 @@
-get_periodos_12meses <-
-  function(df, inicio, fim) {
+#' Adds a column that classifies observations into 12-month periods
+#'
+#' @param df A dataframe containing columns \code{ano} and \code{mes}.
+#' @param start Character string indicating beggining of the first 12-month period: YYYY-MM
+#' @param end Character string indicating the end of the last 12-month period. Recommended format: YYYY-MM
+#'
+#' @return Original dataframe with an additional \code{periodo} variable.
+#'
+#' @seealso \code{\link{read_caged_rds}}
+add_12month_periods <-
+  function(df, start, end) {
 
-    ano_inicio <- str_extract(inicio, '\\d{4}') %>% as.integer()
+    ano_inicio <- str_extract(start, '\\d{4}') %>% as.integer()
 
-    ano_fim <- str_extract(fim, '\\d{4}') %>% as.integer()
+    ano_fim <- str_extract(end, '\\d{4}') %>% as.integer()
 
-    mes_inicio <- str_remove(inicio, as.character(ano_inicio)) %>%
+    mes_inicio <- str_remove(start, as.character(ano_inicio)) %>%
       str_extract('\\d{2}') %>% as.integer()
 
-    mes_fim <- str_remove(fim, as.character(ano_fim)) %>%
+    mes_fim <- str_remove(end, as.character(ano_fim)) %>%
       str_extract('\\d{2}') %>% as.integer()
 
     n_periodos <- ano_fim - ano_inicio

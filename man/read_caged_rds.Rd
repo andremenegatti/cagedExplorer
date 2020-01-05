@@ -6,8 +6,8 @@
 \usage{
 read_caged_rds(
   data_folder,
-  inicio,
-  fim,
+  start,
+  end,
   periodos_12meses = TRUE,
   nested = FALSE,
   stringAsFactors = TRUE
@@ -17,10 +17,10 @@ read_caged_rds(
 \item{data_folder}{A character string indicating the directory where the rds
 files are located.}
 
-\item{inicio}{A character string indicating the month and year of the
+\item{start}{A character string indicating the month and year of the
 \emph{first} month. Recommended format: YYYY-MM.}
 
-\item{fim}{A character string indicating the month and year of the
+\item{end}{A character string indicating the month and year of the
 \emph{last} month. Recommended format: YYYY-MM.}
 
 \item{periodos_12meses}{Logical. Can be set to \code{TRUE} only if multiples
@@ -48,6 +48,6 @@ from a given month, reads them, and organizes data in a single dataframe.
 \dontrun{
 caged2012 <-
 read_caged_rds(data_folder = 'caged_clean',
-               inicio = '2012-01', fim = '2012-12')
+               start = '2012-01', end = '2012-12')
 }
 }

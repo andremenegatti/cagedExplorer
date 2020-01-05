@@ -13,6 +13,6 @@ reds_full
 }
 \description{
 A character vector containing HEX codes of 11 intensities of red,
-from darkest to ligthest.
+from darkest to ligthest. Useful when adjusting plots colors manually.
 }
 \keyword{datasets}

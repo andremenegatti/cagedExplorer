@@ -49,11 +49,11 @@ barplot_12months <-
 
     acumulado_12meses_estado <- df %>%
       filter(!is.na(periodo)) %>%
-      calcular_saldo(periodo)
+      compute_job_creation(periodo)
 
     acumulado_12meses_estado_setor <- df %>%
       filter(!is.na(periodo)) %>%
-      calcular_saldo(periodo, setor) %>%
+      compute_job_creation(periodo, setor) %>%
       drop_na()
 
     plot_acumulado <-

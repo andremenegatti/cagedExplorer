@@ -76,9 +76,9 @@ read_caged <- function(txt_file, pretty = TRUE, ...) {
 #'
 #' @param data_folder A character string indicating the directory where the rds
 #'   files are located.
-#' @param inicio A character string indicating the month and year of the
+#' @param start A character string indicating the month and year of the
 #'   \emph{first} month. Recommended format: YYYY-MM.
-#' @param fim A character string indicating the month and year of the
+#' @param end A character string indicating the month and year of the
 #'   \emph{last} month. Recommended format: YYYY-MM.
 #' @param periodos_12meses Logical. Can be set to \code{TRUE} only if multiples
 #'   of 12 rds files are read. If \code{TRUE}, the resulting dataframe contains
@@ -93,23 +93,23 @@ read_caged <- function(txt_file, pretty = TRUE, ...) {
 #' \dontrun{
 #' caged2012 <-
 #' read_caged_rds(data_folder = 'caged_clean',
-#'                inicio = '2012-01', fim = '2012-12')
+#'                start = '2012-01', end = '2012-12')
 #' }
 read_caged_rds <- function(data_folder,
-                           inicio,
-                           fim,
+                           start,
+                           end,
                            periodos_12meses = TRUE,
                            nested = FALSE,
                            stringAsFactors = TRUE) {
 
-  ano_inicio <- str_extract(inicio, '\\d{4}') %>% as.integer()
+  ano_inicio <- str_extract(start, '\\d{4}') %>% as.integer()
 
-  ano_fim <- str_extract(fim, '\\d{4}') %>% as.integer()
+  ano_fim <- str_extract(end, '\\d{4}') %>% as.integer()
 
-  mes_inicio <- str_remove(inicio, as.character(ano_inicio)) %>%
+  mes_inicio <- str_remove(start, as.character(ano_inicio)) %>%
     str_extract('\\d{2}') %>% as.integer()
 
-  mes_fim <- str_remove(fim, as.character(ano_fim)) %>%
+  mes_fim <- str_remove(end, as.character(ano_fim)) %>%
     str_extract('\\d{2}') %>% as.integer()
 
   df_ref <- crossing(ano = as.character(ano_inicio:ano_fim),
@@ -132,9 +132,9 @@ read_caged_rds <- function(data_folder,
     mutate(ano = as.integer(ano),
            mes = as.integer(mes))
 
-  if (periodos_12meses) df_ref <- get_periodos_12meses(df_ref,
-                                                       inicio = inicio,
-                                                       fim = fim)
+  if (periodos_12meses) df_ref <- add_12month_periods(df_ref,
+                                                       start = start,
+                                                       end = end)
 
   df_ref$dados_caged <- caged_list
 

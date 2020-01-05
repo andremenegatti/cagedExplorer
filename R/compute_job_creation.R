@@ -1,8 +1,9 @@
-#' Computes job creation
+#' Computes job creation, job loss and net job creation
 #'
-#' Computes job creation, job loss and balance, given a dataframe with CAGED
-#' micro-data. The input dataframe must have a column named \code{movimento},
-#' whose values take values 1 (job creation) or -1 (job destruction).
+#' Computes job creation, job loss and net job creation, given a dataframe with
+#' CAGED micro-data. The input dataframe must have a column named
+#' \code{movimento}, whose values take values 1 (job creation) or -1 (job
+#' destruction).
 #'
 #' Allows for aggregated summaries by passing grouping variables in \code{...}
 #'
@@ -11,7 +12,7 @@
 #' @param ... Additional variables for aggretated summaries.
 #'
 #' @return A dataframe.
-calcular_saldo <- function(df, ...) {
+compute_job_creation <- function(df, ...) {
 
   df %>%
     group_by(...) %>%

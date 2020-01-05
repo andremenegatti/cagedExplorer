@@ -39,23 +39,23 @@ criar_tabela_municipio <- function(df_ano_atual, df_ano_anterior,
   # Calculando saldos mensais
   saldo_mes_ano_atual <- df_mes_ano_atual %>%
     filter(municipio_clean == mun) %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_mes_atual = saldo)
 
   saldo_mes_ano_anterior <- df_mes_ano_anterior %>%
     filter(municipio_clean == mun) %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_mes_anterior = saldo)
 
   # Calculando saldos acumulados - 12 meses
   saldo_acum_ano_atual <- df_ano_atual %>%
     filter(municipio_clean == mun) %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_acum_atual = saldo)
 
   saldo_acum_ano_anterior <- df_ano_anterior %>%
     filter(municipio_clean == mun) %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_acum_anterior = saldo)
 
   # Juntando resultados em uma tabela unica
@@ -138,23 +138,23 @@ criar_tabela_regiao_adm <- function(df_ano_atual, df_ano_anterior,
   # Calculando saldos mensais
   saldo_mes_ano_atual <- df_mes_ano_atual %>%
     filter(regiao_administrativa == regiao_adm) %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_mes_atual = saldo)
 
   saldo_mes_ano_anterior <- df_mes_ano_anterior %>%
     filter(regiao_administrativa == regiao_adm) %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_mes_anterior = saldo)
 
   # Calculando saldos acumulados - 12 meses
   saldo_acum_ano_atual <- df_ano_atual %>%
     filter(regiao_administrativa == regiao_adm) %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_acum_atual = saldo)
 
   saldo_acum_ano_anterior <- df_ano_anterior %>%
     filter(regiao_administrativa == regiao_adm) %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_acum_anterior = saldo)
 
   # Juntando resultados em uma tabela unica
@@ -232,20 +232,20 @@ criar_tabela_estado <- function(df_ano_atual, df_ano_anterior,
 
   # Calculando saldos mensais
   saldo_mes_ano_atual <- df_mes_ano_atual %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_mes_atual = saldo)
 
   saldo_mes_ano_anterior <- df_mes_ano_anterior %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_mes_anterior = saldo)
 
   # Calculando saldos acumulados - 12 meses
   saldo_acum_ano_atual <- df_ano_atual %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_acum_atual = saldo)
 
   saldo_acum_ano_anterior <- df_ano_anterior %>%
-    calcular_saldo(setor, .drop = FALSE) %>%
+    compute_job_creation(setor, .drop = FALSE) %>%
     select(setor, saldo_acum_anterior = saldo)
 
   # Juntando resultados em uma tabela unica

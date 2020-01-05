@@ -1,3 +1,11 @@
+#' Returns a custom 'RdBu' color palette
+#'
+#' Builds a custom 'RdBu'color palette based on a
+#' vector of breaks.
+#'
+#' @param map_breaks A numeric vector
+#'
+#' @return A character vector with HEX codes
 get_palette <- function(map_breaks) {
 
   reds_full <- c("#67001F", "#B2182B", "#D6604D",

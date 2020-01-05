@@ -13,6 +13,6 @@ blues_full
 }
 \description{
 A character vector containing HEX codes of 9 intensities of blue,
-from lightest to darkest.
+from lightest to darkest. Useful when adjusting plots colors manually.
 }
 \keyword{datasets}

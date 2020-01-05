@@ -1,3 +1,17 @@
+#' Returns custom break points for plots
+#'
+#' Returns a numeric vector with custom break points. Break points are defined so as to isolate
+#' the highest positive value and lowest negative value, include zero, and split the remaining
+#' observations into groups of similar sizes.
+#'
+#' @param x A numeric vector
+#' @param n Number of groups defined by the break points
+#'
+#' @return A numeric vector with the break points
+#'
+#' @examples
+#' get_breaks(rnorm(n = 100, mean = 0, sd = 100))
+#' get_breaks(c(-100, seq(-80, -10, 10), 0, seq(10, 80, 10) 100))
 get_breaks <- function(x, n = 9) {
 
   x <- sort(x)
