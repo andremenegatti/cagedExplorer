@@ -5,8 +5,8 @@
 #'
 #' @param txt_file Character string indicating the txt file path.
 #' @param pretty Logical. If \code{TRUE}, uses well formatted column names
-#'   instead of those in the txt file.
-#' @param ... Additinal arguments to \code{read_delim}.
+#'   instead of those from the txt file.
+#' @param ... Additional arguments to \code{read_delim}.
 #'
 #' @return A dataframe with data from the txt file.
 #'

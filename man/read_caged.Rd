@@ -10,9 +10,9 @@ read_caged(txt_file, pretty = TRUE, ...)
 \item{txt_file}{Character string indicating the txt file path.}
 
 \item{pretty}{Logical. If \code{TRUE}, uses well formatted column names
-instead of those in the txt file.}
+instead of those from the txt file.}
 
-\item{...}{Additinal arguments to \code{read_delim}.}
+\item{...}{Additional arguments to \code{read_delim}.}
 }
 \value{
 A dataframe with data from the txt file.

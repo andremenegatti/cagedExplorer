@@ -2,6 +2,28 @@
 #'
 #' Joins provided dataframe with another containing region-level
 #' \code{POLYGON} geospatial data. The key used to perform the join is the
+#' character column \emph{regiao_administrativa}.
+#'
+#' @param df A dataframe containing data from Sao Paulo's regions
+#' (\emph{Regiões Administrativas}). It must contains a column named
+#' \emph{regiao_administrativa}.
+#'
+#' @return A dataframe containing the original data and an additional
+#'   \emph{geometry} column with region-level geospatial data.
+#'
+#' @examples
+#' municipios_sp %>%
+#'   count(regiao_administrativa) %>%
+#'   add_geometry_municipios()
+add_geometry_regioes_adm <- function(df) {
+  polygons_regioes_adm_sp %>%
+    right_join(df, by = 'regiao_administrativa')
+}
+
+#' Adds a geometry column to dataframe with region-level data
+#'
+#' Joins provided dataframe with another containing region-level
+#' \code{POLYGON} geospatial data. The key used to perform the join is the
 #' character column \emph{regiao_governo}.
 #'
 #' @param df A dataframe containing data from Sao Paulo's regions
@@ -14,7 +36,7 @@
 #' @examples
 #' municipios_sp %>%
 #'   count(regiao_governo) %>%
-#'   add_geometry_municipios()
+#'   add_geometry_regioes_gov()
 add_geometry_regioes_gov <- function(df) {
   polygons_regioes_gov_sp %>%
     right_join(df, by = 'regiao_governo')
